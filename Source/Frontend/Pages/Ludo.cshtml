@@ -1,0 +1,139 @@
+﻿@page "/Ludo/{id}"
+@using Frontend.Models
+@model Frontend.Pages.LudoModel
+@{
+}
+
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="text-center margtop">@Model.GameSession.Name</h1>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-8">
+            <table class="table">
+                <tr>
+                    <td colspan="5" rowspan="5" class="greenNest"></td>
+                    <td class="square-1"> </td>
+                    <td class="square-2"></td>
+                    <td class="square-3"></td>
+                    <td colspan="5" rowspan="5" class="yellowNest"></td>
+                </tr>
+                <tr>
+                    <td class="square-44"></td>
+                    <td class="square_yellow0"></td>
+                    <td class="square-4"></td> @*Gul ingång till mållinje*@
+                </tr>
+                <tr>
+                    <td class="square-43"></td>
+                    <td class="square_yellow1"></td>
+                    <td class="square-5"></td>
+                </tr>
+                <tr>
+                    <td class="square-42"></td>
+                    <td class="square_yellow2"></td>
+                    <td class="square-6"></td>
+                </tr>
+                <tr>
+                    <td class="square-41"></td>
+                    <td class="square_yellow3"></td>
+                    <td class="square-7"></td>
+                </tr>
+                <tr>
+                    <td class="square-36"></td>
+                    <td class="square-37"></td> @*Grön ingång till mållinje*@
+                    <td class="square-38"></td>
+                    <td class="square-39"></td>
+                    <td class="square-40"></td>
+                    <td colspan="3" rowspan="3" class="goal"></td>
+                    <td class="square-8"></td>
+                    <td class="square-9"></td>
+                    <td class="square-10"></td>
+                    <td class="square-11"></td>
+                    <td class="square-12"></td>
+                </tr>
+                <tr>
+                    <td class="square-35"></td>
+                    <td class="square_green0"></td> @*Blå ingång till mållinje*@
+                    <td class="square_green1"></td>
+                    <td class="square_green2"></td>
+                    <td class="square_green3"></td>
+                    <td class="square_blue3"></td>
+                    <td class="square_blue2"></td>
+                    <td class="square_blue1"></td>
+                    <td class="square_blue0"></td>
+                    <td class="square-13"></td>
+                </tr>
+                <tr>
+                    <td class="square-34"></td>
+                    <td class="square-33"></td>
+                    <td class="square-32"></td>
+                    <td class="square-31"></td>
+                    <td class="square-30"></td>
+                    <td class="square-18"></td>
+                    <td class="square-17"></td>
+                    <td class="square-16"></td>
+                    <td class="square-15"></td>
+                    <td class="square-14"></td>
+                </tr>
+                <tr>
+                    <td colspan="5" rowspan="5" class="redNest"></td>
+                    <td class="square-29"></td>
+                    <td class="square_red3"></td>
+                    <td class="square-19"></td>
+                    <td colspan="5" rowspan="5" class="blueNest"></td>
+                </tr>
+                <tr>
+                    <td class="square-28"></td>
+                    <td class="square_red2"></td>
+                    <td class="square-20"></td>
+                </tr>
+                <tr>
+                    <td class="square-27"></td>
+                    <td class="square_red1"></td>
+                    <td class="square-21"></td>
+                </tr>
+                <tr>
+                    <td class="square-26"></td> @*Röd ingång till mållinje*@
+                    <td class="square_red0"></td>
+                    <td class="square-22"></td>
+                </tr>
+                <tr>
+                    <td class="square-25"></td>
+                    <td class="square-24"></td>
+                    <td class="square-23"></td>
+                </tr>
+            </table>
+
+        </div>
+        <div class="col-4">
+
+            <h2 class="current-player">Current player:@Model.GameSession.Players[@Model.GameSession.CurrentPlayer].Name</h2>
+            <p class="roll"></p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4">
+            <img src="~/img/dice-5.png" alt="Playing dice" class="dice" />
+        </div>
+        <div class="col-8">
+            <button class="btnRoll float-right" onclick="rollDice('@Model.GameSession.Id')">🎲 Roll Dice</button>
+        </div>
+    </div>
+</div>
+
+
+@foreach (var player in Model.GameSession.Players)
+{
+    foreach (var pawn in player.Pawns)
+    {
+        <script type="text/javascript">
+                PositionPawn('@pawn.Position', '@pawn.IsInNest', '@pawn.AtFinishLine', '@pawn.IsFinished', '@pawn.Color', '@pawn.ID', '@Model.GameSession.Id');
+        </script>
+    }
+}
+

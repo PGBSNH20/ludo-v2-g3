@@ -1,0 +1,70 @@
+﻿@page
+@model CreateGameModel
+@{
+    ViewData["Title"] = "Create New Game";
+}
+
+
+<div class="container-fluid margtop">
+    <h1 class="text-center margb">Create New Game</h1>
+    <div class="row align-items-center">
+        <div class="col-12">
+            <form asp-for="AddNewGame" method="post" id="group">
+                <div class="control-group from-group">
+                    <div class="controls">
+                        <label asp-for="NewGame.SessionName">Session name:</label>
+                        <input asp-for="NewGame.SessionName" class="form-control" />
+                        <span asp-validation-for="NewGame.SessionName" class="error-message-color"></span>
+
+                        <p class="help-block"></p>
+                    </div>
+                </div>
+                <div class="controls">
+                    <input type="radio" name="players" value="2 Players" id="player2" checked="checked" /> 2 Players
+                    <input type="radio" name="players" value="3 Players" id="player3" /> 3 Players
+                    <input type="radio" name="players" value="4 Players" id="player4" /> 4 Players
+                    <p class="help-block"></p>
+                </div>
+                <div class="control-group from-group">
+                    <div class="controls">
+                        <label asp-for="NewGame.PlayerOne">Player 1 name:</label>
+                        <input asp-for="NewGame.PlayerOne" class="form-control" />
+                        <span asp-validation-for="NewGame.PlayerOne" class="error-message-color"></span>
+                        <p class="help-block"></p>
+                    </div>
+                </div>
+                <div class="control-group from-group">
+                    <div class="controls">
+                        <label asp-for="NewGame.PlayerTwo">Player 2 name:</label>
+                        <input asp-for="NewGame.PlayerTwo" class="form-control" />
+                        <span asp-validation-for="NewGame.PlayerTwo" class="error-message-color"></span>
+
+                        <p class="help-block"></p>
+                    </div>
+                </div>
+                <div class="control-group from-group pl3">
+                    <div class="controls">
+                        <label asp-for="NewGame.PlayerThree" id="p3">Player 3 name:</label>
+                        <input asp-for="NewGame.PlayerThree" class="form-control" />
+                        <span asp-validation-for="NewGame.PlayerThree" class="error-message-color"></span>
+
+                        <p class="help-block"></p>
+                    </div>
+                </div>
+                <div class="control-group from-group pl4">
+                    <div class="controls">
+                        <label asp-for="NewGame.PlayerFour" id="p4">Player 4 name:</label>
+                        <input asp-for="NewGame.PlayerFour" class="form-control" />
+                        <span asp-validation-for="NewGame.PlayerFour" class="error-message-color"></span>
+
+                        <p class="help-block"></p>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-success" id="sendMessageButton">Create!</button>
+                <button type="button" class="btn btn-outline-warning">Clear form</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+

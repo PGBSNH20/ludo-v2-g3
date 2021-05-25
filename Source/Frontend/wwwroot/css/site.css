@@ -1,71 +1,202 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
-
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
-}
-
-/* Provide sufficient contrast against white background */
-a {
-  color: #0366d6;
-}
-
-.btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
-}
-
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
-}
+﻿
 
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
-  font-size: 14px;
-}
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.border-top {
-  border-top: 1px solid #e5e5e5;
-}
-.border-bottom {
-  border-bottom: 1px solid #e5e5e5;
-}
-
-.box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
-}
-
-button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
-}
-
-/* Sticky footer styles
--------------------------------------------------- */
-html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
 }
+
 .footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px; /* Vertically center the text there */
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px; /* Vertically center the text there */
+}
+
+/* Ludo board styles
+-------------------------------------------------- */
+.pawn {
+    background-color: white;
+    width: 25px;
+    height: 25px;
+    margin: 5px auto;
+    border: 2px solid black;
+}
+
+.yellow-pawn {
+    background-color: #ded51d;
+}
+
+.green-pawn {
+    background-color: #50de1d;
+}
+
+.blue-pawn {
+    background-color: #1d4ade;
+}
+
+.red-pawn {
+    background-color: #de471d;
+}
+
+td[class^="square"] {
+    background: white;
+    border: 1px solid black;
+    width: 50px;
+    height: 50px;
+    margin: 0;
+}
+
+/* Green finishline
+----------------------------------------*/
+
+td[class^="square_green"] {
+    background: green;
+    border: 1px solid black;
+    width: 50px;
+    height: 50px;
+    margin: 0;
+}
+
+/* yellow finishline
+----------------------------------------*/
+
+td[class^="square_yellow"] {
+    background: yellow;
+    border: 1px solid black;
+    width: 50px;
+    height: 50px;
+    margin: 0;
+}
+
+/* Blue finishline
+----------------------------------------*/
+
+td[class^="square_blue"] {
+    background: blue;
+    border: 1px solid black;
+    width: 50px;
+    height: 50px;
+    margin: 0;
+}
+
+/* Red finishline
+----------------------------------------*/
+
+td[class^="square_red"] {
+    background: red;
+    border: 1px solid black;
+    width: 50px;
+    height: 50px;
+    margin: 0;
+}
+
+/* main route nest color 
+----------------------------------------*/
+
+td.square-37 {
+    background-color: green;
+}
+
+td.square-4 {
+    background-color: yellow;
+}
+
+td.square-15 {
+    background-color: blue;
+}
+
+td.square-26 {
+    background-color: red;
+}
+
+/* Nests 
+----------------------------------------*/
+
+.greenNest {
+    background-color: green;
+}
+
+.yellowNest {
+    background-color: yellow;
+}
+
+.redNest {
+    background-color: red;
+}
+
+.blueNest {
+    background-color: blue;
+}
+
+.goal {
+    background-color: skyblue;
+}
+
+.blue {
+    background-color: blue;
+}
+
+.main {
+    margin: 0 auto;
+}
+
+table {
+    margin: 150px auto;
+}
+
+.error-message-color {
+    color: #D33682;
+}
+
+.btnRoll {
+    /*position: absolute;*/
+    /*left: 20%;*/
+    /*transform: translateX(-50%);*/
+    /*margin-left: 1px;*/
+    margin-top: 55px;
+    color: #444;
+    background: none;
+    border: none;
+    font-family: inherit;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-weight: 400;
+    transition: all 0.2s;
+    background-color: white;
+    background-color: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+    padding: 0.7rem 2.5rem;
+    border-radius: 50rem;
+    margin-bottom: 100px;
+    box-shadow: 0 1.75rem 3.5rem rgba(0, 0, 0, 0.1);
+}
+
+.current-player {
+    margin-top: 135px;
+}
+
+.dice {
+    position: absolute;
+    left: 25%;
+    /*top: 16.5rem;*/
+    transform: translateX(-50%);
+    height: 10rem;
+    box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.2);
+}
+
+.margtop {
+    margin-top: 50px;
+}
+
+.margb {
+    margin-bottom: 30px;
 }
