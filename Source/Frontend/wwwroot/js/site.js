@@ -12,7 +12,7 @@ async function rollDice(id) {
         body: JSON.stringify(id)
     };
 
-    var response1 = await fetch("https://localhost:44353/api/Ludo/RollDice", requestOptions);
+    var response1 = await fetch("https://localhost:44303/api/Ludo/RollDice", requestOptions);
     var data = await response1.json();
     document.querySelector(".roll").innerText = data;
 

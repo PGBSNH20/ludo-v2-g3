@@ -22,7 +22,7 @@ namespace Frontend.Pages
 
         public void OnGet(Guid id)
         {
-            var client = new RestClient("https://localhost:44353/api");
+            var client = new RestClient("https://localhost:44303/api");
             client.Timeout = -1;
             var request = new RestRequest($"/Ludo/{id}", DataFormat.Json);
             //IRestResponse<GameSessionResponse> response = client.Execute(request);

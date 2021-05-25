@@ -3,7 +3,7 @@
 async function PostChanges(pawn, sessionId) {
     var requestModel = { PawnId: pawn.getAttribute("pawn-id"), SessionId: sessionId };
 
-    var response = await fetch('https://localhost:44353/api/Ludo/MovePawn',
+    var response = await fetch('https://localhost:44303/api/Ludo/MovePawn',
         {
             method: 'PUT',
             headers: {

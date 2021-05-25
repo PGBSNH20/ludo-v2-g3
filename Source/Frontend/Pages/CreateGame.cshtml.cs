@@ -24,7 +24,7 @@ namespace Frontend.Pages
                 return Page();
             }
 
-            var client = new RestClient("https://localhost:44353/api/Ludo/NewGame");
+            var client = new RestClient("https://localhost:44303/api/Ludo/NewGame");
             client.Timeout = -1;
             var request = new RestRequest(Method.POST);
             request.AddJsonBody(NewGame);
