@@ -29,8 +29,11 @@ namespace Frontend.Pages
             var request = new RestRequest(Method.POST);
             request.AddJsonBody(NewGame);
             IRestResponse response = client.Execute(request);
+            var sessionIdResponse = response.Content;
 
-            return RedirectToPage("/Index");
+            var sessionId = sessionIdResponse.Substring(1, 36);
+            var url = $"/ludo/{sessionId}";
+            return Redirect(url);
         }
     }
 }
