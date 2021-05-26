@@ -37,6 +37,7 @@ namespace Backend.Controllers
         [HttpPut("[action]")]
         public IActionResult RollDice([FromBody] Guid id)
         {
+            //TODO: Abstract to method.
             var foundSession = _dbContext.GameSessions.FirstOrDefault(gs => gs.Id == id);
 
             if (foundSession == null)
@@ -58,10 +59,11 @@ namespace Backend.Controllers
             return Ok(roll);
         }
 
-        // GET api/<LudoController>/5
+        // GET api/GameSession/c0cc0ee3-5d69-4325-953b-15ad17db6dc3
         [HttpGet("{id}")]
         public IActionResult GameSession(Guid id)
         {
+            //TODO: Abstract to method
             IGameSession session = _dbContext.GameSessions
                 .Include(gs => gs.Players)
                 .ThenInclude(p => p.Pawns)
@@ -74,7 +76,7 @@ namespace Backend.Controllers
             return BadRequest(_displayMessage.SessionNotFound());
         }
 
-        // POST api/<LudoController>
+        // POST api/NewGame
         [HttpPost("[action]")]
         public IActionResult NewGame([FromBody] NewGameRequest request)
         {
@@ -97,12 +99,6 @@ namespace Backend.Controllers
         public IActionResult MovePawn([FromBody] MovePawnRequest request)
         {
             return Ok(_movingPawn.Move(request));
-        }
-
-        // DELETE api/<LudoController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
     }
 }
