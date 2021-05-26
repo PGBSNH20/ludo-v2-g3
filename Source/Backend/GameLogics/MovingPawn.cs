@@ -43,7 +43,6 @@ namespace Backend.GameLogics
 
         public string Move(MovePawnRequest request)
         {
-            //DbQueries dbQueries = new DbQueries();
             var gameSession = _dbQueries.GetGameSessionById(request.SessionId, _dbContext);
 
             if (!gameSession.HasRolled)
@@ -51,7 +50,6 @@ namespace Backend.GameLogics
                 return _displayMessage.MustRollToMove();
             }
 
-            //FindPawn findPawn = new FindPawn();
             IPawn pawn = _findPawn.ById(request.PawnId, gameSession.Players);
 
             if (pawn == null)
@@ -59,13 +57,11 @@ namespace Backend.GameLogics
                 return _displayMessage.PawnNotFound();
             }
 
-            // Get all the players pawns in order to check if a move is valid.
             List<Pawn> playerPawns = _findPawn.ByColor(pawn.Color, gameSession.Players);
 
             if (pawn.IsInNest && gameSession.LatestRoll != 6)
             {
                 gameSession.HasRolled = false;
-                //TODO: Add interface and DPI
                 gameSession.CurrentPlayer = _rotatePlayer.GetNewPlayer(gameSession.CurrentPlayer, gameSession.Players.Count);
                 _dbContext.SaveChanges();
                 return _displayMessage.NoAvailablePawns();
@@ -79,7 +75,6 @@ namespace Backend.GameLogics
 
                 if (!invalidMove)
                 {
-                    //KnockPawn knockPawn = new KnockPawn();
                     _knockPawn.ByPosition(startPosition, gameSession);
 
                     pawn.Position = startPosition;
@@ -94,16 +89,11 @@ namespace Backend.GameLogics
                     return _displayMessage.OccupiedPosition();
                 }
             }
-            //Last square == 44
+
             if (!pawn.IsInNest && !pawn.IsFinished)
             {
-                //PawnFinishLinePosition pawnFinishLinePosition = new PawnFinishLinePosition();
-
                 var enterFinishLine = _pawnFinishLinePosition.Get(pawn.Color.ToString());
-
-                //NewPawnPosition newPawnPosition = new NewPawnPosition();
                 _newPawnPosition.Calculate(gameSession.LatestRoll, enterFinishLine, pawn);
-
                 bool sameColorOccupation = playerPawns.Any(p => p.Position == pawn.Position && p.IsFinished == false && p.ID != pawn.ID);
 
                 if (sameColorOccupation)
@@ -119,7 +109,6 @@ namespace Backend.GameLogics
                     pawnToKnock.IsInNest = true;
                 }
                 gameSession.HasRolled = false;
-                //RotatePlayer rotatePlayer = new RotatePlayer();
                 gameSession.CurrentPlayer = _rotatePlayer.GetNewPlayer(gameSession.CurrentPlayer, gameSession.Players.Count);
             }
 
