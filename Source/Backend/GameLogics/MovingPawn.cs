@@ -45,6 +45,11 @@ namespace Backend.GameLogics
         {
             var gameSession = _dbQueries.GetGameSessionById(request.SessionId, _dbContext);
 
+            if (gameSession == null)
+            {
+                return _displayMessage.NoGameId();
+            }
+
             if (!gameSession.ActiveGame)
             {
                 //TODO: Lägg till i display message.

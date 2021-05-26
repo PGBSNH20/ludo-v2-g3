@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Backend.Data;
 using Backend.Enum;
 using Backend.GameLogics;
@@ -98,6 +99,15 @@ namespace Backend.Controllers
         [HttpPut("[action]")]
         public IActionResult MovePawn([FromBody] MovePawnRequest request)
         {
+            string pawnIdPattern = "^[0-9]+$";
+            string guidPattern =
+                "(^([0-9A-Fa-f]{8}[-][0-9A-Fa-f]{4}[-][0-9A-Fa-f]{4}[-][0-9A-Fa-f]{4}[-][0-9A-Fa-f]{12})$)";
+            bool isPawnIdValid = Regex.IsMatch(request.PawnId.ToString(), pawnIdPattern);
+            bool isGameSessionIdValid = Regex.IsMatch(request.SessionId.ToString(), guidPattern);
+            if (!isPawnIdValid || !isGameSessionIdValid)
+            {
+                return BadRequest();
+            }
             return Ok(_movingPawn.Move(request));
         }
     }
