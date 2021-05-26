@@ -16,7 +16,6 @@ using Backend.Model;
 using Backend.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Backend.Hubs;
 
 namespace Backend
 {
@@ -44,13 +43,6 @@ namespace Backend
                             .AllowAnyOrigin();
                     });
             });
-
-            services.AddSignalR()
-                    .AddHubOptions<LudoHub>(hub =>
-                    {
-                        hub.KeepAliveInterval = TimeSpan.FromSeconds(30); //Client connection heartbeat every 30s
-                    });
-
             services.AddControllers();
             services.AddMyServices();
 
@@ -79,7 +71,6 @@ namespace Backend
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapHub<LudoHub>("/ludo");
             });
         }
     }
