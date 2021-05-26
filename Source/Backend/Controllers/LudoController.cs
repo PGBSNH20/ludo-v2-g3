@@ -23,12 +23,14 @@ namespace Backend.Controllers
         private readonly LudoContext _dbContext;
         private readonly ICreateNewGame _createNewGame;
         private readonly IMovingPawn _movingPawn;
+        private readonly IDisplayMessage _displayMessage;
 
-        public LudoController(LudoContext dbContext, ICreateNewGame createNewGame, IMovingPawn movingPawn)
+        public LudoController(LudoContext dbContext, ICreateNewGame createNewGame, IMovingPawn movingPawn, IDisplayMessage displayMessage)
         {
             _dbContext = dbContext;
             _createNewGame = createNewGame;
             _movingPawn = movingPawn;
+            _displayMessage = displayMessage;
         }
 
         // GET: api/<LudoController>
@@ -39,12 +41,12 @@ namespace Backend.Controllers
 
             if (foundSession == null)
             {
-                return BadRequest("Game id not found.");
+                return BadRequest(_displayMessage.NoGameId());
             }
 
             if (foundSession.HasRolled)
             {
-                return Ok("Player has already rolled the dice.");
+                return Ok(_displayMessage.HasRolled());
             }
 
             Random rnd = new Random();
@@ -69,7 +71,7 @@ namespace Backend.Controllers
             {
                 return Ok(session);
             }
-            return BadRequest("Session with that id doesn't exist");
+            return BadRequest(_displayMessage.SessionNotFound());
         }
 
         // POST api/<LudoController>
@@ -86,7 +88,7 @@ namespace Backend.Controllers
             }
             catch
             {
-                return Conflict("An error occurred while adding a new game to the database.");
+                return Conflict(_displayMessage.DbError());
             }
         }
 

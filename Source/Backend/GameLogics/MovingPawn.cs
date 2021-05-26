@@ -23,9 +23,10 @@ namespace Backend.GameLogics
         private readonly IKnockPawn _knockPawn;
         private readonly INewPawnPosition _newPawnPosition;
         private readonly IPawn _pawn;
+        private readonly IDisplayMessage _displayMessage;
 
         public MovingPawn(LudoContext dbContext, IPawnFinishLinePosition pawnFinishLinePosition, IPawnStartPosition pawnStartPosition, IRotatePlayer rotatePlayer,
-            IDbQueries dbQueries, IFindPawn findPawn, IKnockPawn knockPawn, INewPawnPosition newPawnPosition, IPawn pawn)
+            IDbQueries dbQueries, IFindPawn findPawn, IKnockPawn knockPawn, INewPawnPosition newPawnPosition, IPawn pawn, IDisplayMessage displayMessage)
         {
             _dbContext = dbContext;
             _pawnFinishLinePosition = pawnFinishLinePosition;
@@ -36,6 +37,7 @@ namespace Backend.GameLogics
             _knockPawn = knockPawn;
             _newPawnPosition = newPawnPosition;
             _pawn = pawn;
+            _displayMessage = displayMessage;
         }
 
 
@@ -46,7 +48,7 @@ namespace Backend.GameLogics
 
             if (!gameSession.HasRolled)
             {
-                return "You must roll the dice in order to move a pawn.";
+                return _displayMessage.MustRollToMove();
             }
 
             //FindPawn findPawn = new FindPawn();
@@ -54,7 +56,7 @@ namespace Backend.GameLogics
 
             if (pawn == null)
             {
-                return "Pawn was not found.";
+                return _displayMessage.PawnNotFound();
             }
 
             // Get all the players pawns in order to check if a move is valid.
@@ -66,7 +68,7 @@ namespace Backend.GameLogics
                 //TODO: Add interface and DPI
                 gameSession.CurrentPlayer = _rotatePlayer.GetNewPlayer(gameSession.CurrentPlayer, gameSession.Players.Count);
                 _dbContext.SaveChanges();
-                return "No available moves, switching to next player";
+                return _displayMessage.NoAvailablePawns();
             }
 
             if (pawn.IsInNest && gameSession.LatestRoll == 6)
@@ -85,11 +87,11 @@ namespace Backend.GameLogics
                     gameSession.HasRolled = false;
                     gameSession.CurrentPlayer = _rotatePlayer.GetNewPlayer(gameSession.CurrentPlayer, gameSession.Players.Count);
                     _dbContext.SaveChanges();
-                    return "Pawn has been moved.";
+                    return _displayMessage.PawnHasMoved();
                 }
                 else
                 {
-                    return "You already have a pawn at that position.";
+                    return _displayMessage.OccupiedPosition();
                 }
             }
             //Last square == 44
@@ -106,7 +108,7 @@ namespace Backend.GameLogics
 
                 if (sameColorOccupation)
                 {
-                    return "You already have a pawn at that position";
+                    return _displayMessage.OccupiedPosition();
                 }
 
                 foreach (var foundPawn in from player in gameSession.Players from pPawn in player.Pawns where pPawn.Position == pawn.Position && pPawn.Color != pawn.Color && pPawn.IsFinished == false select pPawn)
@@ -122,7 +124,7 @@ namespace Backend.GameLogics
             }
 
             _dbContext.SaveChanges();
-            return "Pawn was moved.";
+            return _displayMessage.PawnHasMoved();
         }
     }
 }

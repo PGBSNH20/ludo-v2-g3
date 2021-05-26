@@ -28,6 +28,7 @@ namespace Backend.Services
                 .AddScoped<IKnockPawn, KnockPawn>()
                 .AddScoped<INewPawnPosition, NewPawnPosition>()
                 .AddScoped<IPawn, Pawn>()
+                .AddScoped<IDisplayMessage, DisplayMessage>()
                 .AddDbContext<LudoContext>(option =>
                     option.UseSqlServer(
                         @"Server=localhost,41433;Database=LudoV2;User ID=sa; Password=verystrong!pass321"));
