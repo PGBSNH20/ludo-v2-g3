@@ -1,5 +1,5 @@
 ﻿const connection = new signalR.HubConnectionBuilder()
-    .withUrl('https://localhost:44354', {
+    .withUrl('https://localhost:44383', {
         skipNegotiation: true,
         transport: signalR.HttpTransportType.WebSockets
     })
