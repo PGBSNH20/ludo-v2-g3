@@ -22,11 +22,10 @@ namespace Backend.GameLogics
         private readonly IFindPawn _findPawn;
         private readonly IKnockPawn _knockPawn;
         private readonly INewPawnPosition _newPawnPosition;
-        private readonly IPawn _pawn;
         private readonly IDisplayMessage _displayMessage;
 
         public MovingPawn(LudoContext dbContext, IPawnFinishLinePosition pawnFinishLinePosition, IPawnStartPosition pawnStartPosition, IRotatePlayer rotatePlayer,
-            IDbQueries dbQueries, IFindPawn findPawn, IKnockPawn knockPawn, INewPawnPosition newPawnPosition, IPawn pawn, IDisplayMessage displayMessage)
+            IDbQueries dbQueries, IFindPawn findPawn, IKnockPawn knockPawn, INewPawnPosition newPawnPosition, IDisplayMessage displayMessage)
         {
             _dbContext = dbContext;
             _pawnFinishLinePosition = pawnFinishLinePosition;
@@ -36,7 +35,6 @@ namespace Backend.GameLogics
             _findPawn = findPawn;
             _knockPawn = knockPawn;
             _newPawnPosition = newPawnPosition;
-            _pawn = pawn;
             _displayMessage = displayMessage;
         }
 
