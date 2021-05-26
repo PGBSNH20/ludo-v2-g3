@@ -3,7 +3,7 @@ using Backend.Model;
 
 namespace Backend.GameLogics
 {
-    public interface IPlayerWon
+    public interface IGameIsActive
     {
         bool Check(List<Pawn> pawns);
     }

@@ -6,7 +6,7 @@ using Backend.Model;
 
 namespace Backend.GameLogics
 {
-    public class PlayerWon : IPlayerWon
+    public class GameIsActive : IGameIsActive
     {
         public bool Check(List<Pawn> pawns)
         {
