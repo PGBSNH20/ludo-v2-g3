@@ -23,9 +23,10 @@ namespace Backend.GameLogics
         private readonly IKnockPawn _knockPawn;
         private readonly INewPawnPosition _newPawnPosition;
         private readonly IDisplayMessage _displayMessage;
+        private readonly IPlayerWon _playerWon;
 
         public MovingPawn(LudoContext dbContext, IPawnFinishLinePosition pawnFinishLinePosition, IPawnStartPosition pawnStartPosition, IRotatePlayer rotatePlayer,
-            IDbQueries dbQueries, IFindPawn findPawn, IKnockPawn knockPawn, INewPawnPosition newPawnPosition, IDisplayMessage displayMessage)
+            IDbQueries dbQueries, IFindPawn findPawn, IKnockPawn knockPawn, INewPawnPosition newPawnPosition, IDisplayMessage displayMessage, IPlayerWon playerWon)
         {
             _dbContext = dbContext;
             _pawnFinishLinePosition = pawnFinishLinePosition;
@@ -36,12 +37,18 @@ namespace Backend.GameLogics
             _knockPawn = knockPawn;
             _newPawnPosition = newPawnPosition;
             _displayMessage = displayMessage;
+            _playerWon = playerWon;
         }
 
 
         public string Move(MovePawnRequest request)
         {
             var gameSession = _dbQueries.GetGameSessionById(request.SessionId, _dbContext);
+
+            if (gameSession.ActiveGame)
+            {
+                
+            }
 
             if (!gameSession.HasRolled)
             {
@@ -110,6 +117,7 @@ namespace Backend.GameLogics
                 gameSession.CurrentPlayer = _rotatePlayer.GetNewPlayer(gameSession.CurrentPlayer, gameSession.Players.Count);
             }
 
+            gameSession.ActiveGame = _playerWon.Check(playerPawns);
             _dbContext.SaveChanges();
             return _displayMessage.PawnHasMoved();
         }
