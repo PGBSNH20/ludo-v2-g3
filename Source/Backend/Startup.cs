@@ -79,7 +79,12 @@ namespace Backend
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapHub<LudoHub>("/ludo");
+                endpoints.MapHub<LudoHub>("/ludo", options =>
+                {
+                    options.Transports = 
+                        Microsoft.AspNetCore.Http.Connections.HttpTransportType.WebSockets | 
+                        Microsoft.AspNetCore.Http.Connections.HttpTransportType.LongPolling;
+                });
             });
         }
     }
