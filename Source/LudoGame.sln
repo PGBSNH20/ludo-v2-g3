@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Backend", "Backend\Backend.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Frontend", "Frontend\Frontend.csproj", "{8F382C46-0569-4F6B-89F3-E65C1C96C7EF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LudoApiTests", "LudoApiTests\LudoApiTests.csproj", "{3E2F9CCD-721B-4908-ACA2-7C10E54BFD64}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{8F382C46-0569-4F6B-89F3-E65C1C96C7EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F382C46-0569-4F6B-89F3-E65C1C96C7EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8F382C46-0569-4F6B-89F3-E65C1C96C7EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E2F9CCD-721B-4908-ACA2-7C10E54BFD64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E2F9CCD-721B-4908-ACA2-7C10E54BFD64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E2F9CCD-721B-4908-ACA2-7C10E54BFD64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E2F9CCD-721B-4908-ACA2-7C10E54BFD64}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
