@@ -3,7 +3,7 @@
 ### Innehållsförteckning
 
 * [Förord]()
-* [Specifikation för uppgift]()
+* [Specifikation för uppgift](https://github.com/PGBSNH20/ludo-v2-g3/blob/main/Documentation/description.md)
 * [Kodstruktur]()
 * [Backend]()
 * [Frontend]()
