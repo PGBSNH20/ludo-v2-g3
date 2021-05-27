@@ -14,7 +14,3 @@
 
 Projektarbete **Ludogame v2**, det avslutande projektarbetet för kursen Webbutveckling backend på Teknikhögskolan 2021
 
-Grupp 3
-* Jonas Lindell
-* Patric Bergkvist
-* Sebastian Brandt
