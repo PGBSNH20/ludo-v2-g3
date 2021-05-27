@@ -1,13 +1,18 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Backend;
+using Backend.Controllers;
 using Backend.Data;
 using Backend.Database;
 using Backend.Enum;
 using Backend.GameLogics;
 using Backend.Model;
+using Backend.Requests;
 using GameEngine.GameLogic;
 using Microsoft.EntityFrameworkCore;
+using Moq;
+using Moq.EntityFrameworkCore;
 using Xunit;
 
 namespace LudoApiTests
@@ -23,6 +28,27 @@ namespace LudoApiTests
         private INewPawnPosition _newPawnPosition = new NewPawnPosition();
         private IDisplayMessage _displayMessage = new DisplayMessage();
         private IGameIsActive _gameIsActive = new GameIsActive();
+
+        [Fact]
+        public void Get_GameSession()
+        {
+            //Arrange
+            IGameSession gameSession = new GameSession();
+            DbContextOptions<LudoContext> options = new DbContextOptionsBuilder<LudoContext>().Options;
+            var moqContext = new Mock<LudoContext>(options);
+
+            List<GameSession> gameSessions = new List<GameSession>();
+            gameSession.Name = "Test Session";
+            gameSessions.Add((GameSession)gameSession);
+
+            moqContext.Setup(gs => gs.GameSessions).ReturnsDbSet(gameSessions);
+
+            //Act
+            var foundSession = _dbQueries.GetGameSessionById(gameSession.Id, moqContext.Object);
+
+            //Assert
+            Assert.Equal("Test Session", foundSession.Name);
+        }
 
         [Theory]
         [InlineData(1, true)]
