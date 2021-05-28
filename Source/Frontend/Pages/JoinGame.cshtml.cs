@@ -15,7 +15,7 @@ namespace Frontend.Pages
         [BindProperty(SupportsGet = true)]
         public Guid SessionId { get; set; }
 
-        public IActionResult OnPostTest()
+        public IActionResult OnPostJoin()
         {
             var client = new RestClient("https://localhost:44303/api");
             client.Timeout = -1;
