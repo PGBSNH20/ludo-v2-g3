@@ -30,6 +30,20 @@ namespace LudoApiTests
         private IGameIsActive _gameIsActive = new GameIsActive();
 
         [Theory]
+        [InlineData(1, 2, 0)]
+        [InlineData(1, 4, 2)]
+        [InlineData(3, 4, 0)]
+        [InlineData(2, 3, 0)]
+        [InlineData(1, 3, 2)]
+        [InlineData(0, 4, 1)]
+        public void Current_Player_Is_X_Rotate_Player_Expect_Current_Player_Y(int currentPlayer, int totalPlayers, int expected)
+        {
+            int result = _rotatePlayer.GetNewPlayer(currentPlayer, totalPlayers);
+
+            Assert.Equal(result, expected);
+        }
+
+        [Theory]
         [InlineData(12, 4, PawnColor.Blue, 0)]
         [InlineData(12, 3, PawnColor.Blue, 15)]
         [InlineData(0, 5, PawnColor.Blue, 5)]
