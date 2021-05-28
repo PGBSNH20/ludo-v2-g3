@@ -48,7 +48,7 @@ namespace Backend
             services.AddSignalR()
                     .AddHubOptions<LudoHub>(hub =>
                     {
-                        hub.KeepAliveInterval = TimeSpan.FromSeconds(30); //Client connection heartbeat every 30s
+                        hub.KeepAliveInterval = TimeSpan.FromSeconds(180); 
                     });
 
             services.AddControllers();
