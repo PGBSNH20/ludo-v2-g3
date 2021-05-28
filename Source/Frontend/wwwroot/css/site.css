@@ -157,11 +157,6 @@ table {
 }
 
 .btnRoll {
-    /*position: absolute;*/
-    /*left: 20%;*/
-    /*transform: translateX(-50%);*/
-    /*margin-left: 1px;*/
-    /*margin-top: 55px;*/
     color: #444;
     background: none;
     border: none;
@@ -176,7 +171,6 @@ table {
     backdrop-filter: blur(10px);
     padding: 0.7rem 2.5rem;
     border-radius: 50rem;
-    /*margin-bottom: 100px;*/
     box-shadow: 0 1.75rem 3.5rem rgba(0, 0, 0, 0.1);
 }
 
@@ -187,7 +181,6 @@ table {
 .dice {
     position: absolute;
     left: 25%;
-    /*top: 16.5rem;*/
     transform: translateX(-50%);
     height: 10rem;
     box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.2);
