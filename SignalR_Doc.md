@@ -1,7 +1,7 @@
 ## How does [SignalR](https://dotnet.microsoft.com/apps/aspnet/signalr) work in this Ludo game?
 
 * User loads into the webpage and gets prompted to set their session name.
-* When the user connects to the SignalR Ludo Hub it sends the session ID through one of the parameters which adds the room to the hub Groups if it doesn't already exist. this is to make sure each user is connected to their respective session IDs so not to send all game updates to all session IDs (that would be pretty chaotic).
+* When the user connects to the SignalR Ludo Hub it sends the session ID through one of the parameters which adds the room to the hub [Groups](https://docs.microsoft.com/en-us/aspnet/signalr/overview/guide-to-the-api/working-with-groups) if it doesn't already exist. this is to make sure each user is connected to their respective session IDs so not to send all game updates to all session IDs (that would be pretty chaotic).
 * User will be connected as the name they put in the prompt, which should be one of the names assigned to the game session.
 * When a user presses the "Roll Dice" button it gets a random number from 1-6 from the API and also invokes the SendDiceRoll method on the server which then invokes the function "RecieveDiceRoll" on all clients in that group (session ID). 
 
