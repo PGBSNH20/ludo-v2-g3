@@ -17,7 +17,7 @@
   * [Nytt spel](#nytt-spel-backend)
   * [RollDice](#backend-spela)
   * [Anslut till spel](#anslut-till-spel)
-* [SignalR](https://github.com/PGBSNH20/ludo-v2-g3/blob/main/Documentation/SignalR_Doc.md)
+* [SignalR](https://github.com/PGBSNH20/ludo-v2-g3/blob/main/Documentation/vg_async.md)
 
 <a name="preface" />
 
