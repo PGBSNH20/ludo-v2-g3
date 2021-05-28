@@ -16,6 +16,18 @@ Projektarbete **Ludogame v2**, det avslutande projektarbetet för kursen Webbutv
 Uppgiften vi har fått är att göra om Ludogame v1 som var en consol applikation till en Razor pages applikation. 
 All spellogik ska skötas av ett RestAPI och presenteras i en ASP.NNET Core Web App.
 
+## Beroenden
+
+Detta projekt innehåller följande NuGet paket
+
+* Microsoft.AspNetCore.Cors 
+* Microsoft.EntityFrameworkCore
+* Microsoft.EntityFrameworkCore.SqlServer
+* Microsoft.EntityFrameworkCore.Tools
+* Moq.EntityFrameworkCore
+* RestSharp
+* Xunit
+
 ## Kodstruktur
 
 I Vår solution finns det 3st projekt
