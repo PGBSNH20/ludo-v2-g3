@@ -29,6 +29,27 @@ namespace LudoApiTests
         private IDisplayMessage _displayMessage = new DisplayMessage();
         private IGameIsActive _gameIsActive = new GameIsActive();
 
+        [Fact]
+        public void LudoController_Roll_Dice_Expect_Has_Rolled_True()
+        {
+            List<GameSession> gameSessions = new List<GameSession>();
+            IGameSession gameSession = new GameSession();
+            ICreateNewGame createNewGame = new CreateNewGame(gameSession);
+            DbContextOptions<LudoContext> options = new DbContextOptionsBuilder<LudoContext>().Options;
+            var moqContext = new Mock<LudoContext>(options);
+            IMovingPawn movingPawn = new MovingPawn(moqContext.Object, _pawnFinishLinePosition, _pawnStartPosition,
+                _rotatePlayer, _dbQueries, _findPawn, _knockPawn, _newPawnPosition, _displayMessage, _gameIsActive);
+            var ludoController = new LudoController(moqContext.Object, createNewGame, movingPawn, _displayMessage);
+            gameSessions.Add((GameSession)gameSession);
+
+            moqContext.Setup(gs => gs.GameSessions).ReturnsDbSet(gameSessions);
+
+            //Act
+            ludoController.RollDice(gameSession.Id);
+
+            Assert.True(gameSession.HasRolled);
+        }
+
         [Theory]
         [InlineData(1, 2, 0)]
         [InlineData(1, 4, 2)]
