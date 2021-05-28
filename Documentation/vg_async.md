@@ -83,4 +83,11 @@ connection.on("UpdateGameState", function (pawns) {
     }
 });
 ```
-        
+
+
+
+## Flowcharts
+
+![](https://i.imgur.com/C10eFzy.png)
+
+![](https://i.imgur.com/zCS5qSi.png)
