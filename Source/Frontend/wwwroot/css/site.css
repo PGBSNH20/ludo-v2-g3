@@ -161,7 +161,7 @@ table {
     /*left: 20%;*/
     /*transform: translateX(-50%);*/
     /*margin-left: 1px;*/
-    margin-top: 55px;
+    /*margin-top: 55px;*/
     color: #444;
     background: none;
     border: none;
@@ -242,12 +242,12 @@ table {
 }
 
 #get-session-id {
-    margin-top: 55px;
+    /*margin-top: 55px;*/
     color: #444;
     background: none;
     border: none;
     font-family: inherit;
-    font-size: 1rem;
+    font-size: 1.2rem;
     text-transform: uppercase;
     cursor: pointer;
     font-weight: 400;

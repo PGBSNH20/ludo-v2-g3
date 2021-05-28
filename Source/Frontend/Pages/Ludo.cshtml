@@ -5,7 +5,7 @@
 }
 
 
-
+<body onload="connect()"></body>
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
@@ -112,39 +112,29 @@
         </div>
         <div class="col-4">
 
-            <h2 class="current-player">Current player:@Model.GameSession.Players[@Model.GameSession.CurrentPlayer].Name</h2>
-            <p class="roll"></p>
-
-
-
+            <h2 id="currentPlayer" class="current-player">Current player: @Model.GameSession.Players[@Model.GameSession.CurrentPlayer].Name</h2>
+            <p id="diceValue" class="roll"></p>
         </div>
     </div>
     <div class="row">
         <div class="col-4">
-            <img src="~/img/dice-5.png" alt="Playing dice" class="dice" />
+            <img id="diceVisual" src="~/img/dice-5.png" alt="Playing dice" class="dice" />
         </div>
         <div class="col-8">
-            <button class="btnRoll float-right" onclick="rollDice('@Model.GameSession.Id')">🎲 Roll Dice</button>
-            <br /><br /><br />
-            <button class="float-right" id="get-session-id">Get invite link</button>
+            <button id="diceBtn" class="btnRoll float-right" onclick="rollDice('@Model.GameSession.Id')">🎲 Roll Dice</button>
+            <br/><br/><br/>
+            <button class="btnRoll float-right" id="get-session-id">Get invite link</button>
+
         </div>
     </div>
 </div>
-<div id="myModal" class="modal">
-
-    <!-- Modal content -->
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <p>@Model.GameSession.Id</p>
-    </div>
-
-    @foreach (var player in Model.GameSession.Players)
+@foreach (var player in Model.GameSession.Players)
+{
+    foreach (var pawn in player.Pawns)
     {
-        foreach (var pawn in player.Pawns)
-        {
-            <script type="text/javascript">
+        <script type="text/javascript">
                 PositionPawn('@pawn.Position', '@pawn.IsInNest', '@pawn.AtFinishLine', '@pawn.IsFinished', '@pawn.Color', '@pawn.ID', '@Model.GameSession.Id');
-            </script>
-        }
+        </script>
     }
+}
 

@@ -1,4 +1,20 @@
-﻿function PositionPawn(position, isInNest, isAtFinishLine, isFinished, color, pawnId, sessionId) {
+﻿let ColorMapper = ["Red", "Green", "Blue", "Yellow"]
+
+function PositionPawn(position, isInNest, isAtFinishLine, isFinished, color, pawnId, sessionId) {
+
+    /*
+     * these arguments are passed as primitives from the client and passed as strings from razor pages
+     * for whatever reason
+     * to amend this stringify them and compare them to "true" string to prevent any incorrect positioning
+     */
+    isInNest = ((isInNest + "").toLowerCase() == "true");
+    isAtFinishLine = ((isAtFinishLine + "").toLowerCase() == "true");
+    isFinished = ((isFinished + "").toLowerCase() == "true");
+
+    if (typeof (color) == "number") {
+        color = ColorMapper[color - 1];
+    }
+    //console.log(position, isInNest, isAtFinishLine, isFinished, color, pawnId, sessionId);
 
     var pawnColor;
     switch (color) {
@@ -23,7 +39,7 @@
     pawn.addEventListener("click", function () {
         PostChanges(this, sessionId);
     });
-    if (isInNest === 'True') {
+    if (isInNest) {
         var nest;
         switch (color) {
         case 'Green':
@@ -47,21 +63,21 @@
         return;
     }
 
-    if (isFinished === 'True') {
+    if (isFinished) {
         var finishSquare = document.querySelector('.goal');
         finishSquare.appendChild(pawn);
     }
 
-    if (isInNest === 'False' && isAtFinishLine === 'False' && isFinished === 'False') {
-        console.log(position);
+    if (!isInNest && !isAtFinishLine && !isFinished) {
         var foundSquare = document.
             querySelector(".square-" + position);
         foundSquare.appendChild(pawn);
     }
 
-    if (isInNest === 'False' && isAtFinishLine === 'True' && isFinished === 'False') {
+    if (!isInNest && isAtFinishLine && !isFinished) {
         var finishLineSquare = document
             .querySelector(".square_" + color.toLowerCase() + position);
         finishLineSquare.appendChild(pawn);
     }
 }
+

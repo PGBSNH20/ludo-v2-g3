@@ -4,14 +4,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Frontend</title>
-    <script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
-    <script src="~/js/Ludo.js"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/Ludo.js"></script>
     <script src="~/js/onLoad.js" asp-append-version="true"></script>
 
 </head>
-<body onload="connect()">
+<body>
     <header>
 
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -42,8 +42,8 @@
                         </li>
                     </ul>
                     <form class="form-inline my-2 my-lg-0">
-                        <input class="form-control mr-sm-2" type="text" placeholder="Search">
-                        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+                        <input class="form-control mr-sm-2" type="text" placeholder="Enter gamesession ID">
+                        <button class="btn btn-secondary my-2 my-sm-0 btn-search" type="submit">Join Game</button>
                     </form>
                 </div>
             </div>

@@ -12,11 +12,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Backend.Data;
+using Backend.Hubs;
 using Backend.Model;
 using Backend.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Backend.Hubs;
 
 namespace Backend
 {
@@ -38,7 +38,7 @@ namespace Backend
                 options.AddPolicy(name: MyAllowSpecificOrigins,
                     builder =>
                     {
-                        builder.WithOrigins("https://localhost:44353/")
+                        builder.WithOrigins("https://localhost:44303/")
                             .AllowAnyHeader()
                             .AllowAnyMethod()
                             .AllowAnyOrigin();
@@ -48,7 +48,7 @@ namespace Backend
             services.AddSignalR()
                     .AddHubOptions<LudoHub>(hub =>
                     {
-                        hub.KeepAliveInterval = TimeSpan.FromSeconds(30); //Client connection heartbeat every 30s
+                        hub.KeepAliveInterval = TimeSpan.FromSeconds(180); 
                     });
 
             services.AddControllers();
@@ -79,7 +79,12 @@ namespace Backend
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapHub<LudoHub>("/ludo");
+                endpoints.MapHub<LudoHub>("/ludo", options =>
+                {
+                    options.Transports = 
+                        Microsoft.AspNetCore.Http.Connections.HttpTransportType.WebSockets | 
+                        Microsoft.AspNetCore.Http.Connections.HttpTransportType.LongPolling;
+                });
             });
         }
     }

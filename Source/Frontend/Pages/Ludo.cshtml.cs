@@ -25,7 +25,6 @@ namespace Frontend.Pages
             var client = new RestClient("https://localhost:44303/api");
             client.Timeout = -1;
             var request = new RestRequest($"/Ludo/{id}", DataFormat.Json);
-            //IRestResponse<GameSessionResponse> response = client.Execute(request);
 
             var response = client.Get<GameSessionResponse>(request);
 

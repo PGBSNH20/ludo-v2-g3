@@ -11,7 +11,8 @@ namespace Frontend.Pages
 {
     public class CreateGameModel : PageModel
     {
-        [BindProperty] public AddNewGame NewGame { get; set; }
+        [BindProperty] 
+        public AddNewGame NewGame { get; set; }
 
         public void OnGet()
         {

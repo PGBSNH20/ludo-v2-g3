@@ -23,9 +23,10 @@ namespace Backend.GameLogics
         private readonly IKnockPawn _knockPawn;
         private readonly INewPawnPosition _newPawnPosition;
         private readonly IDisplayMessage _displayMessage;
+        private readonly IGameIsActive _gameIsActive;
 
         public MovingPawn(LudoContext dbContext, IPawnFinishLinePosition pawnFinishLinePosition, IPawnStartPosition pawnStartPosition, IRotatePlayer rotatePlayer,
-            IDbQueries dbQueries, IFindPawn findPawn, IKnockPawn knockPawn, INewPawnPosition newPawnPosition, IDisplayMessage displayMessage)
+            IDbQueries dbQueries, IFindPawn findPawn, IKnockPawn knockPawn, INewPawnPosition newPawnPosition, IDisplayMessage displayMessage, IGameIsActive gameIsActive)
         {
             _dbContext = dbContext;
             _pawnFinishLinePosition = pawnFinishLinePosition;
@@ -36,12 +37,24 @@ namespace Backend.GameLogics
             _knockPawn = knockPawn;
             _newPawnPosition = newPawnPosition;
             _displayMessage = displayMessage;
+            _gameIsActive = gameIsActive;
         }
 
 
         public string Move(MovePawnRequest request)
         {
             var gameSession = _dbQueries.GetGameSessionById(request.SessionId, _dbContext);
+
+            if (gameSession == null)
+            {
+                return _displayMessage.NoGameId();
+            }
+
+            if (!gameSession.ActiveGame)
+            {
+                //TODO: Lägg till i display message.
+                return "A player has already won the game.";
+            }
 
             if (!gameSession.HasRolled)
             {
@@ -110,6 +123,7 @@ namespace Backend.GameLogics
                 gameSession.CurrentPlayer = _rotatePlayer.GetNewPlayer(gameSession.CurrentPlayer, gameSession.Players.Count);
             }
 
+            gameSession.ActiveGame = _gameIsActive.Check(playerPawns);
             _dbContext.SaveChanges();
             return _displayMessage.PawnHasMoved();
         }
