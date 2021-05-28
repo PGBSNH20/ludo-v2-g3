@@ -1,11 +1,11 @@
 ## How does [SignalR](https://dotnet.microsoft.com/apps/aspnet/signalr) work in this Ludo game?
 
-* User loads into the webpage and gets prompted to set their session name.
-* When the user connects to the SignalR Ludo Hub it sends the session ID through one of the parameters which adds the room to the hub [Groups](https://docs.microsoft.com/en-us/aspnet/signalr/overview/guide-to-the-api/working-with-groups) if it doesn't already exist. this is to make sure each user is connected to their respective session IDs so not to send all game updates to all session IDs (that would be pretty chaotic).
-* User will be connected as the name they put in the prompt, which should be one of the names assigned to the game session.
-* When a user presses the "Roll Dice" button it gets a random number from 1-6 from the API and also invokes the SendDiceRoll method on the server which then invokes the function "RecieveDiceRoll" on all clients in that group (session ID). 
+* Användaren laddar in webbsidan och blir uppmanad att ange sessionsnamn och blir ansluten till SignalR hubben.
+* När användaren ansluter till signalR hubben skickas sessions ID't till servern vilket lägger till den sessionen i en hub [Group](https://docs.microsoft.com/en-us/aspnet/signalr/overview/guide-to-the-api/working-with-groups) om sessionen inte redan finns i en grupp. Detta säkerställer att alla method invocations skickas till rätt klienter.
+* Användaren blir ansluten som det namnet de angav i början, vilket bör vara ett av namnen som är knutna till den här spel sessionen.
+* När en användare trycker på "Roll Dice" knappen så hämtar vi ett slumpat nummer från 1-6 från API:et och den anropar "SendDiceRoll" metoden på servern vilket i sin tur anropar funktioen "RecieveDiceRoll" på alla klienter i den gruppen (Sessions ID).
 
-Server-side Method for Dice Roll syncing
+Server-side Metod för tärningssynkning 
 ```csharp
         public async Task SendDiceRoll(int roll, string ludoId)
         {
@@ -24,7 +24,7 @@ Server-side Method for Dice Roll syncing
             await Clients.Group(ludoId).SendAsync("RecieveDiceRoll", roll, player.Name);
         }
 ```
-Client-side Function for Dice Roll syncing
+Client-side Funktion för tärningssynkning 
 ```js
 connection.on("RecieveDiceRoll", function (num, player) {
     //update the diceRoll id to display "[player] rolled [num]!"
@@ -35,9 +35,9 @@ connection.on("RecieveDiceRoll", function (num, player) {
 ```
 
 
-* After the dice has been rolled we should update who's turn is next, we do this by invoking the "UpdatePlayerTurn" function on all clients
+* Efter att tärningen rullats så måste vi uppdatera vems tur det är på alla klienter, vi gör detta genom att anropa "UpdatePlayerTurn" funktionen på alla klienter.
 
-Server-side method for player turn update
+Server-side metood för spelarrotationen.
 ```csharp
         public async Task UpdateNextPlayerTurn(string ludoId)
         {
@@ -51,7 +51,7 @@ Server-side method for player turn update
             await Clients.Group(ludoId.ToString()).SendAsync("UpdatePlayerTurn", playerTurn.Name);
         }
 ```
-Client-side function for player turn update
+Client-side function för spelarrotationen.
 ```js
 connection.on("UpdatePlayerTurn", function (player) {
     //if the name specified in the parameter is not ours the button should be disabled so we can't interact with it
@@ -63,9 +63,9 @@ connection.on("UpdatePlayerTurn", function (player) {
 });
 ```
 
-* As for updating the game state visually, we clear the pawns and recreate them at their new positions. All the updating of pawn positions etc happens behind the curtains (on the server) but we still need to update them to their new positions client-side.
+* För att kunna uppdatera spelet visuellt på alla klienter så rensar vi alla pjäser och återskapar dem med deras nya position. All pjäs-logik sker i bakgrunden på servern men vi behöver fortfarande uppdatera dem på klienten så att alla är synkade.
 
-Server send UpdateGameState function invocation to all clients on this sessionID, which force updates the game board for everyone in the room.
+Anropa UpdateGameState funktionen på alla klienter i den angivna sessionen, vilket tvingar alla klienter i det rummet att uppdatera spelbrädans state.
 ```js
 connection.on("UpdateGameState", function (pawns) {
     var data = JSON.parse(pawns);
