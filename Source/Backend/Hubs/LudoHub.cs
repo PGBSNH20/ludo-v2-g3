@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.SignalR;
 using Backend.Model;
 using Backend.Data;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace Backend.Hubs
 {
@@ -39,6 +40,7 @@ namespace Backend.Hubs
                 .Include(gs => gs.Players)
                 .First(x => x.Id == Guid.Parse(ludoId));
             Player playerTurn = session.Players[session.CurrentPlayer];
+
             await Clients.Group(ludoId.ToString()).SendAsync("UpdatePlayerTurn", playerTurn.Name);
         }
 
@@ -55,6 +57,18 @@ namespace Backend.Hubs
         {
             ConnectedUsers.Remove(Context.ConnectionId);
             return base.OnDisconnectedAsync(exception);
+        }
+
+        public async Task SynchronizeGameState(string ludoId)
+        {
+            IGameSession session = _dbContext.GameSessions
+                .Include(gs => gs.Players)
+                .ThenInclude(gs => gs.Pawns)
+                .FirstOrDefault(x => x.Id == Guid.Parse(ludoId));
+
+            var payload = JsonConvert.SerializeObject(session.Players.Select(x => x.Pawns));
+
+            await Clients.Group(ludoId).SendAsync("UpdateGameState", payload);
         }
     }
 }
