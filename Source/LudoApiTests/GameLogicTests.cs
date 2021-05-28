@@ -29,6 +29,85 @@ namespace LudoApiTests
         private IDisplayMessage _displayMessage = new DisplayMessage();
         private IGameIsActive _gameIsActive = new GameIsActive();
 
+        [Theory]
+        [InlineData(1, true, 22)]
+        [InlineData(1, false, 21)]
+        [InlineData(4, true, 25)]
+        public void Pawn_Position_Is_X_GameSession_CurrentRoll_Is_Y_HasRolled_Is_Z_Expect_New_Postition_XY(int latestRoll, bool hasRolled, int expectedPosition)
+        {
+            //Arrange
+            List<GameSession> gameSessions = new List<GameSession>();
+            List<Player> players = new List<Player>();
+            List<Pawn> pawns = new List<Pawn>();
+            IGameSession gameSession = new GameSession();
+            ICreateNewGame createNewGame = new CreateNewGame(gameSession);
+            DbContextOptions<LudoContext> options = new DbContextOptionsBuilder<LudoContext>().Options;
+            var moqContext = new Mock<LudoContext>(options);
+            IMovingPawn movingPawn = new MovingPawn(moqContext.Object, _pawnFinishLinePosition, _pawnStartPosition,
+                _rotatePlayer, _dbQueries, _findPawn, _knockPawn, _newPawnPosition, _displayMessage, _gameIsActive);
+            var ludoController = new LudoController(moqContext.Object, createNewGame, movingPawn, _displayMessage);
+
+            Player playerOne = Factory.CreateNewPlayer();
+            playerOne.Name = "Jonas";
+            Pawn pawnOne = new Pawn()
+            {
+                Color = PawnColor.Blue,
+                Position = 21,
+                IsInNest = false
+            };
+            pawns.Add(pawnOne);
+            playerOne.Pawns.Add(pawnOne);
+            Pawn pawnTwo = new Pawn()
+            {
+                Color = PawnColor.Blue,
+                Position = 1,
+                IsInNest = false
+            };
+            pawns.Add(pawnTwo);
+            playerOne.Pawns.Add(pawnTwo);
+            Player playerTwo = Factory.CreateNewPlayer();
+            playerTwo.Name = "Jonas";
+            Pawn pawnThree = new Pawn()
+            {
+                Color = PawnColor.Red,
+                Position = 3,
+                IsInNest = false
+            };
+            pawns.Add(pawnThree);
+            playerTwo.Pawns.Add(pawnThree);
+            Pawn pawnFour = new Pawn()
+            {
+                Color = PawnColor.Red,
+                Position = 16,
+                IsInNest = false
+            };
+            pawns.Add(pawnFour);
+            playerTwo.Pawns.Add(pawnFour);
+            players.Add(playerOne);
+            players.Add(playerTwo);
+            gameSession.LatestRoll = latestRoll;
+            gameSession.HasRolled = hasRolled;
+            gameSession.Players = players;
+
+            gameSessions.Add((GameSession)gameSession);
+
+            moqContext.Setup(gs => gs.GameSessions).ReturnsDbSet(gameSessions);
+            moqContext.Setup(gs => gs.Players).ReturnsDbSet(players);
+            moqContext.Setup(gs => gs.Pawns).ReturnsDbSet(pawns);
+
+            MovePawnRequest request = new MovePawnRequest()
+            {
+                PawnId = pawnOne.ID,
+                SessionId = gameSession.Id,
+            };
+
+            //Act
+            ludoController.MovePawn(request);
+
+            //Assert
+            Assert.Equal(expectedPosition, pawnOne.Position);
+        }
+
         [Fact]
         public void LudoController_Roll_Dice_Expect_Has_Rolled_True()
         {
