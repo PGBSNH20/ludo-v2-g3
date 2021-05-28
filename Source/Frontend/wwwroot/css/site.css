@@ -253,3 +253,19 @@ table {
     margin-bottom: 100px;
     box-shadow: 0 1.75rem 3.5rem rgba(0, 0, 0, 0.1);
 }
+
+.ludo-image {
+    width: 50%;
+    height: 50%;
+    border: 1px solid black;
+    margin-top: 45px;
+    image-rendering: auto;
+}
+
+.getting-started {
+    margin-top: 25px;
+}
+
+li {
+    list-style-type: none;
+}
