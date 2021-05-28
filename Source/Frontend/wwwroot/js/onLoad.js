@@ -18,7 +18,6 @@ function PositionPawn(position, isInNest, isAtFinishLine, isFinished, color, paw
         color = ColorMapper[color - 1];
     }
 
-    console.log(position, isInNest, isAtFinishLine, isFinished, color, pawnId, sessionId);
 
     var pawnColor;
     switch (color) {

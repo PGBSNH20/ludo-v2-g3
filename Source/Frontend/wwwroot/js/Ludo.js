@@ -28,9 +28,8 @@ connection.on("RecieveDiceRoll", function (num, player) {
 });
 
 connection.on("UpdatePlayerTurn", function (player) {
-    //var btnVisibility = player == me;
-    document.getElementById("diceBtn").disabled = player != me;
-    document.getElementById("diceBtn").style.backgroundColor = player != me ? "#f44336" : "#4CAF50";
+    document.getElementById("diceBtn").disabled = player.toLowerCase() != me.toLowerCase();
+    document.getElementById("diceBtn").style.backgroundColor = player.toLowerCase() != me.toLowerCase() ? "#f44336" : "#4CAF50";
     document.getElementById("currentPlayer").innerText = "Current Player: " + player;
 });
 
@@ -46,22 +45,6 @@ connection.on("UpdateGameState", function (pawns) {
     for (playerPawns of data) {
         for (pawn of playerPawns) {
             PositionPawn(pawn['Position'], pawn['IsInNest'], pawn['AtFinishLine'], pawn['IsFinished'], pawn['Color'], pawn['ID'], getCurrentGuid);
-            //console.log(pawn['Position'], pawn['IsInNest'], pawn['AtFinishLine'], pawn['IsFinished'], pawn['Color'], pawn['ID'], getCurrentGuid)
         }
     }
-
-
-    //for (playerPawns of data) {
-    //    for (single in playerPawns) {
-    //        for (pawn of coll) {
-                
-    //        }
-    //    }
-    //}
-
-    //for (player of data) {
-    //    for (pawn of player) {
-            
-    //    }
-    //}
 });
