@@ -29,7 +29,25 @@ namespace LudoApiTests
         private IDisplayMessage _displayMessage = new DisplayMessage();
         private IGameIsActive _gameIsActive = new GameIsActive();
 
+        [Theory]
+        [InlineData(17, true)]
+        [InlineData(15, false)]
+        public void Knock_Pawn_At_Position_X_Expect_IsInNest_Equals_True(int knockPosition, bool expected)
+        {
+            GameSession gameSession = new GameSession();
+            List<Player> players = new List<Player>();
+            Player playerOne = Factory.CreateNewPlayer();
+            Pawn pawn = new Pawn();
+            pawn.Position = 17;
+            pawn.IsInNest = false;
+            playerOne.Pawns.Add(pawn);
+            players.Add(playerOne);
+            gameSession.Players.Add(playerOne);
 
+            _knockPawn.ByPosition(knockPosition, gameSession);
+
+            Assert.Equal(pawn.IsInNest, expected);
+        }
 
         [Theory]
         [InlineData(true, true, true, true, false)]
