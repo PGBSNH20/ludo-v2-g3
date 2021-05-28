@@ -17,7 +17,7 @@ using Xunit;
 
 namespace LudoApiTests
 {
-    public class UnitTest1
+    public class GameLogicTests
     {
         private IPawnFinishLinePosition _pawnFinishLinePosition = new PawnFinishLinePosition();
         private IPawnStartPosition _pawnStartPosition = new PawnStartPosition();
@@ -28,6 +28,8 @@ namespace LudoApiTests
         private INewPawnPosition _newPawnPosition = new NewPawnPosition();
         private IDisplayMessage _displayMessage = new DisplayMessage();
         private IGameIsActive _gameIsActive = new GameIsActive();
+
+
 
         [Theory]
         [InlineData(true, true, true, true, false)]
