@@ -30,6 +30,29 @@ namespace LudoApiTests
         private IGameIsActive _gameIsActive = new GameIsActive();
 
         [Theory]
+        [InlineData(12, 4, PawnColor.Blue, 0)]
+        [InlineData(12, 3, PawnColor.Blue, 15)]
+        [InlineData(0, 5, PawnColor.Blue, 5)]
+        [InlineData(22, 6, PawnColor.Red, 1)]
+        [InlineData(37, 1, PawnColor.Green, 0)]
+        [InlineData(37, 4, PawnColor.Green, 3)]
+        public void Roll_Is_X_And_EnterFinishLine_At_Y_And_Pawn_Color_Is_Z_Expect_Position_XY(int currentPosition, int latestRoll, PawnColor color, int expected)
+        {
+            Pawn pawn = new Pawn();
+            pawn.Color = color;
+            pawn.Position = currentPosition;
+            pawn.IsInNest = false;
+            pawn.AtFinishLine = false;
+            pawn.IsFinished = false;
+
+            int finishLinePosition = _pawnFinishLinePosition.Get(pawn.Color.ToString());
+
+            _newPawnPosition.Calculate(latestRoll, finishLinePosition, pawn);
+
+            Assert.Equal(expected, pawn.Position);
+        }
+
+        [Theory]
         [InlineData(17, true)]
         [InlineData(15, false)]
         public void Knock_Pawn_At_Position_X_Expect_IsInNest_Equals_True(int knockPosition, bool expected)
