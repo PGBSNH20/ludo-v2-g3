@@ -15,6 +15,9 @@ async function connect() {
         me = window.prompt("enter name");
 
         connection.invoke("JoinRoom", name, getCurrentGuid);
+        var currentPlayer = document.getElementById("currentPlayer").innerText.replace("Current player: ", "");
+        document.getElementById("diceBtn").disabled = currentPlayer.toLowerCase() != me.toLowerCase();
+        document.getElementById("diceBtn").style.backgroundColor = currentPlayer.toLowerCase() != me.toLowerCase() ? "#f44336" : "#4CAF50";
 
         console.log("SignalR connection established to [" + getCurrentGuid + "] as [" + me + "].");
     } catch (err) {
@@ -30,7 +33,7 @@ connection.on("RecieveDiceRoll", function (num, player) {
 connection.on("UpdatePlayerTurn", function (player) {
     document.getElementById("diceBtn").disabled = player.toLowerCase() != me.toLowerCase();
     document.getElementById("diceBtn").style.backgroundColor = player.toLowerCase() != me.toLowerCase() ? "#f44336" : "#4CAF50";
-    document.getElementById("currentPlayer").innerText = "Current Player: " + player;
+    document.getElementById("currentPlayer").innerText = "Current player: " + player;
 });
 
 connection.on("UpdateGameState", function (pawns) {
