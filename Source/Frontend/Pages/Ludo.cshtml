@@ -123,10 +123,10 @@
         <div class="col-4">
             <img src="~/img/dice-5.png" alt="Playing dice" class="dice" />
         </div>
-        <div class="col-8">
-            <button class="btnRoll float-right" onclick="rollDice('@Model.GameSession.Id')">🎲 Roll Dice</button>
-            <br /><br /><br />
-            <button class="float-right" id="get-session-id">Get invite link</button>
+        <div class="col-8 clearfix">
+            <button class="btnRoll float-right clearfix" onclick="rollDice('@Model.GameSession.Id')">🎲 Roll Dice</button>
+            <br/><br/><br/>
+            <button class="btnRoll float-right" id="get-session-id">Get invite link</button>
         </div>
     </div>
 </div>

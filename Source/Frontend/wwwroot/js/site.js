@@ -19,7 +19,8 @@ async function rollDice(id) {
     if (!isNaN(data)) {
         var newNumber = parseInt(data);
         diceElement.src = `/img/dice-${newNumber}.png`;
-    } else {
+    }
+    else {
         alert(data);
     }
 }

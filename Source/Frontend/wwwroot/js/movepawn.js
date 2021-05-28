@@ -15,8 +15,4 @@ async function PostChanges(pawn, sessionId) {
 
     var data = await response.json();
     document.querySelector(".roll").innerText = data;
-
-    //alert(data);
-
-
 }
