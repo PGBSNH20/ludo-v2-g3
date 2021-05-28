@@ -43,6 +43,13 @@ namespace Backend
                             .AllowAnyOrigin();
                     });
             });
+
+            services.AddSignalR()
+                    .AddHubOptions<LudoHub>(hub =>
+                    {
+                        hub.KeepAliveInterval = TimeSpan.FromSeconds(180); 
+                    });
+
             services.AddControllers();
             services.AddMyServices();
 
@@ -71,6 +78,12 @@ namespace Backend
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<LudoHub>("/ludo", options =>
+                {
+                    options.Transports = 
+                        Microsoft.AspNetCore.Http.Connections.HttpTransportType.WebSockets | 
+                        Microsoft.AspNetCore.Http.Connections.HttpTransportType.LongPolling;
+                });
             });
         }
     }

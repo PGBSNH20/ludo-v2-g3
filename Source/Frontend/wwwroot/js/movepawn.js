@@ -15,4 +15,9 @@ async function PostChanges(pawn, sessionId) {
 
     var data = await response.json();
     document.querySelector(".roll").innerText = data;
+    connection.invoke("SynchronizeGameState", getCurrentGuid);
+
+    //alert(data);
+
+
 }
