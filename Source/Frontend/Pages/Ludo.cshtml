@@ -124,8 +124,14 @@
             <button id="diceBtn" class="btnRoll float-right" onclick="rollDice('@Model.GameSession.Id')">🎲 Roll Dice</button>
             <br/><br/><br/>
             <button class="btnRoll float-right" id="get-session-id">Get invite link</button>
-
         </div>
+    </div>
+</div>
+<div id="sessionIdModal" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>@Model.GameSession.Id</p>
     </div>
 </div>
 @foreach (var player in Model.GameSession.Players)

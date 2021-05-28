@@ -52,7 +52,7 @@ $(document).ready(function () {
 
 // Test for modal
 
-var modal = document.getElementById("myModal");
+var modal = document.getElementById("sessionIdModal");
 
 // Get the button that opens the modal
 var btn = document.getElementById("get-session-id");
