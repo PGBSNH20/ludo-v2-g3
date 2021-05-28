@@ -1,4 +1,4 @@
-### How does [SignalR](https://dotnet.microsoft.com/apps/aspnet/signalr) work in this Ludo game?
+## How does [SignalR](https://dotnet.microsoft.com/apps/aspnet/signalr) work in this Ludo game?
 
 * User loads into the webpage and gets prompted to set their session name.
 * When the user connects to the SignalR Ludo Hub it sends the session ID through one of the parameters which adds the room to the hub Groups if it doesn't already exist. this is to make sure each user is connected to their respective session IDs so not to send all game updates to all session IDs (that would be pretty chaotic).
