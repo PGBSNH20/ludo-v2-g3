@@ -1,4 +1,4 @@
-## How does [SignalR](https://dotnet.microsoft.com/apps/aspnet/signalr) work in this Ludo game?
+## Hur används [SignalR](https://dotnet.microsoft.com/apps/aspnet/signalr) i detta ludospel?
 
 * Användaren laddar in webbsidan och blir uppmanad att ange sessionsnamn och blir ansluten till SignalR hubben.
 * När användaren ansluter till signalR hubben skickas sessions ID't till servern vilket lägger till den sessionen i en hub [Group](https://docs.microsoft.com/en-us/aspnet/signalr/overview/guide-to-the-api/working-with-groups) om sessionen inte redan finns i en grupp. Detta säkerställer att alla method invocations skickas till rätt klienter.
