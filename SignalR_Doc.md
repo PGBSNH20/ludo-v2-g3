@@ -37,7 +37,7 @@ connection.on("RecieveDiceRoll", function (num, player) {
 
 * Efter att tärningen rullats så måste vi uppdatera vems tur det är på alla klienter, vi gör detta genom att anropa "UpdatePlayerTurn" funktionen på alla klienter.
 
-Server-side metood för spelarrotationen.
+Server-side metod för spelarrotationen.
 ```csharp
         public async Task UpdateNextPlayerTurn(string ludoId)
         {
