@@ -2,11 +2,22 @@
 
 ## Innehållsförteckning
 
-* [Förord]()
+* [Förord](#preface)
 * [Specifikation för uppgift](https://github.com/PGBSNH20/ludo-v2-g3/blob/main/Documentation/description.md)
-* [Kodstruktur]()
-  * [Backend]()
-  * [Frontend]()
+* [Docker Compose](#docker-compose)
+* [Kodstruktur](#kodstruktur)
+  * [Backend](#backend)
+  * [Frontend](#frontend)
+* [API Dokumentation](#api-dokumentation)
+  * [Endpoint för ludo resursen](#endpoints)
+* [Frontned dokumentation](#frontend-dokumentation)
+  * [Nytt spel](#nytt-spel)
+  * [Spela](#spel)
+* [Backend dokumentation](#backend-dokumentation)
+  * [Nytt spel](#nytt-spel-backend)
+  * [RollDice](#backend-spela)
+  * [Anslut till spel](#anslut-till-spel)
+* [SignalR](https://github.com/PGBSNH20/ludo-v2-g3/blob/signalR_implementation/SignalR_Doc.md)
 
 <a name="preface" />
 
@@ -14,20 +25,15 @@
 
 Projektarbete **Ludogame v2**, det avslutande projektarbetet för kursen Webbutveckling backend på Teknikhögskolan 2021
 Uppgiften vi har fått är att göra om Ludogame v1 som var en consol applikation till en Razor pages applikation. 
-All spellogik ska skötas av ett RestAPI och presenteras i en ASP.NNET Core Web App.
+All spellogik ska skötas av ett RestAPI och presenteras i en ASP.NET Core Web App.
 
-## Beroenden
+<a name="docker-compose" />
 
-Detta projekt innehåller följande NuGet paket
+## Docker compose
 
-* Microsoft.AspNetCore.Cors 
-* Microsoft.EntityFrameworkCore
-* Microsoft.EntityFrameworkCore.SqlServer
-* Microsoft.EntityFrameworkCore.Tools
-* Moq.EntityFrameworkCore
-* RestSharp
-* Xunit
+Vi har skapat en docker compose fil där vi kör databasen, och genom att ha den i en compose fil så innebär det bland annat att vi båda kan använda oss utav samma connection string. 
 
+<a name="kodstruktur" />
 
 ## Kodstruktur
 
@@ -35,6 +41,8 @@ I Vår solution finns det 3st projekt
 * Backend - ***RestAPI***
 * Frontend - ***ASP.NET Core WebApp (Razor pages)***
 * LudoApiTest - ***Xunit***
+
+<a name="backend" />
 
 ### Backend
 
@@ -61,6 +69,8 @@ I Vår solution finns det 3st projekt
 * Services
   * Innehåller vår dependency injection registry
 
+<a name="frontend" />
+
 ### Frontend
 
 * wwwroot
@@ -75,6 +85,8 @@ I Vår solution finns det 3st projekt
   * Innehåller de modeller vi använder oss av i vår frontend
 * Pages
   * Innehåller de pages vi använder oss av i vår frontend
+
+<a name="api-dokumentation" />
 
 ## API Dokumentation
 
@@ -93,6 +105,8 @@ I Vår solution finns det 3st projekt
   * ```/NewGame``` -- POST
   * ```/RollDice``` -- PUT
   * ```/MovePawn``` -- PUT
+
+<a name="endpoints" />
 
 ## Endpoint för Ludo resursen
 
@@ -342,11 +356,15 @@ Example Request
 
 ---
 
+<a name="frontend-dokumentation" />
+
 ## Frontend ASP.NET Core WebApp
 
 Vår frontend är skapad med ASP.NET Core WebApp (Razor pages).
 
 Spelplanen har vi skapat som en tabell i HTML. Storleken på planen är 13x13 rutor. För att sedan rita ut 4st nästen så valde vi att göra en colspan och en rowspan på 5x5 rutor i varje hörn av brädet. Spelpjäserna går ut från nästet ett ruta framför den lilla rutan i egen färg och ska sedan gå ett varv runt spelplanen i yttervarv innan man får gå in på sin egen mållinje vilken är färgad i spelpjäsens egen färg. 
+
+<a name="nytt-spel" />
 
 ### Skapa nytt spel
 
@@ -360,6 +378,7 @@ public string SessionName { get; set; }
 ```
 
 När det kommer till spelare så har spelare 1 och 2 en required annotation medan spelare 3 och 4 inte har någon sådan. Detta har vi gjort för att man måste vara minst 2 spelare för att skapa ett nytt spel, och därefter så är det frivilligt om man vill lägga till spelare 3 och 4. 
+[Hur vi löst detta i backend:en](#newgame2player)
 
 ```cs
  [Required(ErrorMessage = "Required field")]
@@ -368,6 +387,7 @@ När det kommer till spelare så har spelare 1 och 2 en required annotation meda
  public string PlayerOne { get; set; }
 ```
 
+<a name="spel" />
 
 ### Spela 
 
@@ -434,9 +454,117 @@ async function PostChanges(pawn, sessionId) {
 }
 ```
 
+<a name="backend-dokumentation" />
+
 ## Backend ASP.NET Core WebAPI - RestAPI
 
+<a name="nytt-spel-backend" />
 
+### Nytt spel
 
+När frontend:en skickar en POST request till /NewGame endpointen så tar vi en NewGameRequest som hämtas från request bodyn
 
+```cs
+ [HttpPost("[action]")]
+        public IActionResult NewGame([FromBody] NewGameRequest request)
+        {
+            IGameSession session = _createNewGame.Create(request);
+            try
+            {
+                _dbContext.GameSessions.Add((GameSession)session);
+                _dbContext.SaveChanges();
+                return StatusCode(StatusCodes.Status201Created, session.Id);
+            }
+            catch
+            {
+                return Conflict(_displayMessage.DbError());
+            }
+        }
+```
 
+och med informationen där skapas ett nytt spel upp i metoden Create som finns i klassen CreateNewGame som retunerar en GameSession
+
+```cs
+        public IGameSession Create(NewGameRequest request)
+```
+
+<a name="newgame2player"/>
+
+För spelare 1 och spelare 2 så gäller följande kod
+
+```cs
+ IPlayer playerOne = Factory.CreateNewPlayer();
+            playerOne.Name = request.PlayerOne;
+            for (int i = 0; i < 4; i++)
+            {
+                IPawn greenPawn = Factory.CreateNewPawn();
+                greenPawn.Color = PawnColor.Green;
+                playerOne.Pawns.Add((Pawn)greenPawn);
+            }
+            _gameSession.Players.Add((Player)playerOne);
+```
+
+Men för spelare 3 och 4 kör enbart ovanstående kod om följande villkor stämmer
+
+```cs
+if (!string.IsNullOrEmpty(request.PlayerThree))
+```
+
+Det är av den anledningen vi har valt att göra så man enbart är tvungen att fylla i namn för spelare 1 och 2 i frontend:en
+
+<a name="backend-spela" />
+
+### RollDice
+
+När frontend:en trycker på knappen Roll Dice så skickas det en PUT request till vårat RestAPI, och i bodyn finns det ett Guid ID som vi använder för att med en linq query leta i databasen efter en spelsession med det Guid:t, om vi inte hittar någon så retuneras en BadRequest, annars går vi vidare och kollar om det har varit ett tärningskast utan att någon har flyttat på en pawn, om det är sant så retuneras ett meddelande om att tärningen redan är rullad och spelaren behöver flytta en pawn. Om det villkoret är falskt så går vi vidare och slumpar fram ett nummer mellan 1 och 6, sen ändrar vi LatestRoll till det tärningen visar och ändrar boolen HasRolled till True, vilket kommer vara sant fram till att en pawn har flyttats. Därefter sparar vi ändringarna till databasen och retunerar OK. 
+
+```cs
+ [HttpPut("[action]")]
+        public IActionResult RollDice([FromBody] Guid id)
+        {
+            var foundSession = _dbContext.GameSessions.FirstOrDefault(gs => gs.Id == id);
+
+            if (foundSession == null)
+            {
+                return BadRequest(_displayMessage.NoGameId());
+            }
+
+            if (foundSession.HasRolled)
+            {
+                return Ok(_displayMessage.HasRolled());
+            }
+
+            Random rnd = new Random();
+            int roll = rnd.Next(1, 7);
+
+            foundSession.LatestRoll = roll;
+            foundSession.HasRolled = true;
+            _dbContext.SaveChanges();
+            return Ok(roll);
+        }
+```
+
+<a name="anslut-till-spel" />
+
+### Ansluta till ett spel
+
+När man navigerar till JoinGame i frontend får man fylla in ett Guid, och det skickas som en GET request till vårat RestAPI och endpointen /GameSession
+och i bodyn tar den emot ett Guid.
+
+Det första vi gör är att skapa upp en IGameSession där vi hämtar GameSessions tabellen från databasen och includerar tabellerna Players och Pawns. Därefter kommer ett villkor som kollar om det finns någon gamesession med det guid:t och om det finns så retunerar vi Ok tillsammans med den spelsessionen, annars en Bad Request med ett meddelande. 
+
+```cs
+    public IActionResult GameSession(Guid id)
+        {
+            IGameSession session = _dbContext.GameSessions
+                .Include(gs => gs.Players)
+                .ThenInclude(p => p.Pawns)
+                .FirstOrDefault(gs => gs.Id == id);
+
+            if (session != null)
+            {
+                return Ok(session);
+            }
+            return BadRequest(_displayMessage.SessionNotFound());
+        }
+```
