@@ -30,7 +30,28 @@ namespace LudoApiTests
         private IGameIsActive _gameIsActive = new GameIsActive();
 
         [Fact]
-        public void Get_GameSession()
+        public void Get_Game_Session_By_Id_Expect_TestSession_As_Session_Name()
+        {
+            //Arrange
+            IGameSession gameSession = new GameSession();
+            DbContextOptions<LudoContext> options = new DbContextOptionsBuilder<LudoContext>().Options;
+            var moqContext = new Mock<LudoContext>(options);
+
+            List<GameSession> gameSessions = new List<GameSession>();
+            gameSession.Name = "TestSession";
+            gameSessions.Add((GameSession)gameSession);
+
+            moqContext.Setup(gs => gs.GameSessions).ReturnsDbSet(gameSessions);
+
+            //Act
+            var foundSession = _dbQueries.GetGameSessionById(gameSession.Id, moqContext.Object);
+
+            //Assert
+            Assert.Equal("TestSession", foundSession.Name);
+        }
+
+        [Fact]
+        public void Get_Game_Session_By_Id_Expect_Players_Included()
         {
             //Arrange
             IGameSession gameSession = new GameSession();
@@ -40,14 +61,24 @@ namespace LudoApiTests
             List<GameSession> gameSessions = new List<GameSession>();
             gameSession.Name = "Test Session";
             gameSessions.Add((GameSession)gameSession);
+            List<Player> players = new List<Player>();
+            Player playerOne = new Player();
+            playerOne.GameSessionId = gameSession.Id;
+            players.Add(playerOne);
+            Player playerTwo = new Player();
+            playerTwo.GameSessionId = gameSession.Id;
+            players.Add(playerTwo);
+            gameSession.Players = players;
 
+
+            moqContext.Setup(gs => gs.Players).ReturnsDbSet(players);
             moqContext.Setup(gs => gs.GameSessions).ReturnsDbSet(gameSessions);
 
             //Act
             var foundSession = _dbQueries.GetGameSessionById(gameSession.Id, moqContext.Object);
 
             //Assert
-            Assert.Equal("Test Session", foundSession.Name);
+            Assert.Equal(2, foundSession.Players.Count);
         }
 
         [Theory]
