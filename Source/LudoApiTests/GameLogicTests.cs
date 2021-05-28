@@ -98,7 +98,6 @@ namespace LudoApiTests
             players.Add(playerTwo);
             gameSession.Players = players;
 
-
             moqContext.Setup(gs => gs.Players).ReturnsDbSet(players);
             moqContext.Setup(gs => gs.GameSessions).ReturnsDbSet(gameSessions);
 
