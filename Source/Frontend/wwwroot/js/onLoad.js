@@ -3,21 +3,18 @@
 function PositionPawn(position, isInNest, isAtFinishLine, isFinished, color, pawnId, sessionId) {
 
     /*
-     * these arguments are passed as primitives from the client and passed as strings from server
+     * these arguments are passed as primitives from the client and passed as strings from razor pages
      * for whatever reason
      * to amend this stringify them and compare them to "true" string to prevent any incorrect positioning
-     * can definitely be improved
      */
     isInNest = ((isInNest + "").toLowerCase() == "true");
     isAtFinishLine = ((isAtFinishLine + "").toLowerCase() == "true");
     isFinished = ((isFinished + "").toLowerCase() == "true");
-    pawnId = Number(pawnId);
-    sessionId = sessionId.toUpperCase();
 
     if (typeof (color) == "number") {
         color = ColorMapper[color - 1];
     }
-
+    //console.log(position, isInNest, isAtFinishLine, isFinished, color, pawnId, sessionId);
 
     var pawnColor;
     switch (color) {
@@ -82,7 +79,5 @@ function PositionPawn(position, isInNest, isAtFinishLine, isFinished, color, paw
             .querySelector(".square_" + color.toLowerCase() + position);
         finishLineSquare.appendChild(pawn);
     }
-    console.log(".square-" + position);
-    console.log(".square_" + color.toLowerCase() + position);
 }
 
