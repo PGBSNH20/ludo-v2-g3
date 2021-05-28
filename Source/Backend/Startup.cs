@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Backend.Data;
+using Backend.Hubs;
 using Backend.Model;
 using Backend.Services;
 using Microsoft.EntityFrameworkCore;
@@ -37,7 +38,7 @@ namespace Backend
                 options.AddPolicy(name: MyAllowSpecificOrigins,
                     builder =>
                     {
-                        builder.WithOrigins("https://localhost:44353/")
+                        builder.WithOrigins("https://localhost:44303/")
                             .AllowAnyHeader()
                             .AllowAnyMethod()
                             .AllowAnyOrigin();
