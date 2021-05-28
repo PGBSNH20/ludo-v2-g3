@@ -29,6 +29,34 @@ namespace LudoApiTests
         private IDisplayMessage _displayMessage = new DisplayMessage();
         private IGameIsActive _gameIsActive = new GameIsActive();
 
+        [Theory]
+        [InlineData(true, true, true, true, false)]
+        [InlineData(true, true, true, false, true)]
+        [InlineData(false, false, false, false, true)]
+        public void When_Four_Pawns_Is_Finished_Expect_GameIsActive_False_Else_True(bool oneIsFinished, bool twoIsFinished, bool threeIsFinished, bool fourIsFinished, bool expected)
+        {
+            //Arrange
+            Pawn pawnOne = Factory.CreateNewPawn();
+            Pawn pawnTwo = Factory.CreateNewPawn();
+            Pawn pawnThree = Factory.CreateNewPawn();
+            Pawn pawnFour = Factory.CreateNewPawn();
+            pawnOne.IsFinished = oneIsFinished;
+            pawnTwo.IsFinished = twoIsFinished;
+            pawnThree.IsFinished = threeIsFinished;
+            pawnFour.IsFinished = fourIsFinished;
+            List<Pawn> pawns = new List<Pawn>();
+            pawns.Add(pawnOne);
+            pawns.Add(pawnTwo);
+            pawns.Add(pawnThree);
+            pawns.Add(pawnFour);
+
+            //Act
+            bool actual = _gameIsActive.Check(pawns);
+
+            //Assert
+            Assert.Equal(expected, actual);
+        }
+
         [Fact]
         public void Get_Game_Session_By_Id_Expect_TestSession_As_Session_Name()
         {
@@ -62,10 +90,10 @@ namespace LudoApiTests
             gameSession.Name = "Test Session";
             gameSessions.Add((GameSession)gameSession);
             List<Player> players = new List<Player>();
-            Player playerOne = new Player();
+            var playerOne = Factory.CreateNewPlayer();
             playerOne.GameSessionId = gameSession.Id;
             players.Add(playerOne);
-            Player playerTwo = new Player();
+            var playerTwo = Factory.CreateNewPlayer();
             playerTwo.GameSessionId = gameSession.Id;
             players.Add(playerTwo);
             gameSession.Players = players;
